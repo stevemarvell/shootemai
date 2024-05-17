@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-pub struct Person;
+pub struct Player;
 
 #[derive(Component)]
 pub struct Name(pub String);
