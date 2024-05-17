@@ -1,3 +1,5 @@
+use bevy::prelude::*;
+
 fn hello_world() {
     println!("hello world!");
 }
@@ -27,12 +29,15 @@ fn update_people(mut query: Query<&mut Name, With<Person>>) {
         }
     }
 }
+pub struct HelloPlugin;
 
-use bevy::prelude::*;
+impl Plugin for HelloPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, add_people)
+            .add_systems(Update, (hello_world, (update_people, greet_people).chain()));
+    }
+}
 
 fn main() {
-    App::new()
-        .add_systems(Startup, add_people)
-        .add_systems(Update, (hello_world, (update_people, greet_people).chain()))
-        .run();
+    App::new().add_plugins((DefaultPlugins, HelloPlugin)).run();
 }
