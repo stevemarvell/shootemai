@@ -1,8 +1,10 @@
 use bevy::prelude::*;
-mod components;
 mod resources;
-mod systems;
+mod lighting;
 mod plugins;
+mod player;
+mod terrain;
+mod cameras;
 
 use plugins::HelloPlugin;
 

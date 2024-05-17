@@ -1,10 +1,13 @@
 use bevy::prelude::*;
-use crate::systems::{setup_camera, setup_lighting, add_player, setup_floor};
+use crate::cameras::setup_cameras;
+use crate::player::add_player;
+use crate::lighting::setup_lighting;
+use crate::terrain::setup_terrain;
 
 pub struct HelloPlugin;
 
 impl Plugin for crate::HelloPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, (setup_camera, setup_lighting, setup_floor, add_player ));
+        app.add_systems(Startup, (setup_cameras, setup_lighting, setup_terrain, add_player ));
     }
 }
