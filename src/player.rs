@@ -4,10 +4,9 @@ use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::hierarchy::BuildChildren;
 
 #[derive(Component)]
-pub struct Player;
-
-#[derive(Component)]
-pub struct Name(pub String);
+pub struct Player {
+    pub name: String
+}
 
 pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
                   mut materials: ResMut<Assets<StandardMaterial>>,) {
@@ -21,8 +20,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
             transform: Transform::from_xyz(0.0, 0.5, 0.0),
             ..default()
         })
-        .insert(Player)
-        .insert(Name("Player1".to_string()))
+        .insert(Player{ name: "Alpha".to_string() })
         .with_children(|parent| {
             parent.spawn(PbrBundle {
                 mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),

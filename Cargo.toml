@@ -8,8 +8,8 @@ edition = "2021"
 [dependencies]
 bevy = "0.13.2"
 
-[workspace]
-resolver = "2" # Important! wgpu/Bevy needs this!
+# [workspace]
+# resolver = "2" # Important! wgpu/Bevy needs this!
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
