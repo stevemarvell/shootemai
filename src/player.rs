@@ -14,7 +14,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
         .spawn(PbrBundle {
             mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
             material: materials.add(StandardMaterial {
-                base_color: Color::BLUE,
+                base_color: Color::GREEN,
                 ..default()
             }),
             transform: Transform::from_xyz(0.0, 0.5, 0.0),

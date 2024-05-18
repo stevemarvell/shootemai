@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 mod lighting;
-mod plugins;
+mod setup;
 mod player;
 mod terrain;
 mod cameras;
 
-use plugins::HelloPlugin;
+use setup::SetupPlugin;
 
 fn main() {
-    App::new().add_plugins((DefaultPlugins, HelloPlugin)).run();
+    App::new().add_plugins((DefaultPlugins, SetupPlugin)).run();
 }
