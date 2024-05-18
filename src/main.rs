@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-mod resources;
 mod lighting;
 mod plugins;
 mod player;
