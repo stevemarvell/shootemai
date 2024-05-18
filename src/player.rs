@@ -23,7 +23,6 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
             transform: Transform::from_xyz(0.0, 0.5, 0.0),
             ..default()
         })
-        .insert(Player{ name: "Thing Two".to_string() })
         .with_children(|parent| {
             parent.spawn(PbrBundle {
                 mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
@@ -34,6 +33,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
                 transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
                 ..default()
             });
-        });
+        })
+        .insert(Player{ name: "Thing Two".to_string() });
 }
 
