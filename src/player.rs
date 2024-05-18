@@ -10,11 +10,14 @@ pub struct Player {
 
 pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
                   mut materials: ResMut<Assets<StandardMaterial>>,) {
+    let body_colour = Color::BLUE;
+    let head_colour = Color::RED;
+
     commands
         .spawn(PbrBundle {
             mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
             material: materials.add(StandardMaterial {
-                base_color: Color::GREEN,
+                base_color: body_colour,
                 ..default()
             }),
             transform: Transform::from_xyz(0.0, 0.5, 0.0),
@@ -25,7 +28,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
             parent.spawn(PbrBundle {
                 mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                 material: materials.add(StandardMaterial {
-                    base_color: Color::RED,
+                    base_color: head_colour,
                     ..default()
                 }),
                 transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
