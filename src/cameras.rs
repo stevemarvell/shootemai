@@ -9,14 +9,15 @@ pub fn setup_cameras(mut commands: Commands) {
     });
 }
 
-const CAMERA_SPEED:f32 = 10.0;
+const CAMERA_SPEED:f32 = 5.0;
 
 pub fn camera_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player_query: Query<&mut Transform, With<Camera>>,
+    mut camera_query: Query<&mut Transform, With<Camera>>,
 ) {
-    if let Ok(mut transform) = player_query.get_single_mut() {
+    if let Ok(mut transform) = camera_query.get_single_mut() {
+
         let mut direction = Vec3::ZERO;
 
         if keyboard_input.pressed(KeyCode::KeyQ) {
@@ -31,5 +32,21 @@ pub fn camera_movement(
         }
 
         transform.translation += direction * CAMERA_SPEED * time.delta_seconds();
+
+        // pan and tilt
+
+        if keyboard_input.pressed(KeyCode::ArrowLeft) {
+            transform.rotate(Quat::from_rotation_y(CAMERA_SPEED/10.0* time.delta_seconds()));
+        }
+        if keyboard_input.pressed(KeyCode::ArrowRight) {
+            transform.rotate(Quat::from_rotation_y(-CAMERA_SPEED/10.0 * time.delta_seconds()));
+        }
+
+        if keyboard_input.pressed(KeyCode::ArrowUp) {
+            transform.rotate_local(Quat::from_rotation_x(-CAMERA_SPEED/10.0* time.delta_seconds()));
+        }
+        if keyboard_input.pressed(KeyCode::ArrowDown) {
+            transform.rotate_local(Quat::from_rotation_x(CAMERA_SPEED/10.0 * time.delta_seconds()));
+        }
     }
 }

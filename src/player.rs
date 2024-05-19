@@ -14,7 +14,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
 
     commands
         .spawn((
-            Player { name: "Thing Two".to_string() },
+            Player { name: "Thing One".to_string() },
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {

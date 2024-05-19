@@ -1,9 +1,13 @@
 use bevy::prelude::*;
+
+mod cameras;
 mod lighting;
+
+mod terrain;
 mod setup;
 mod player;
-mod terrain;
-mod cameras;
+
+mod friend;
 
 use setup::SetupPlugin;
 
