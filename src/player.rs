@@ -37,7 +37,7 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
         });
 }
 
-pub const PLAYER_SPEED: f32 = 5.0;
+const PLAYER_SPEED: f32 = 5.0;
 
 pub fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
