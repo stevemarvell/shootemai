@@ -2,14 +2,17 @@ use bevy::input::ButtonInput;
 use bevy::prelude::*;
 use bevy::math::Vec3;
 
-pub fn setup_cameras(mut commands: Commands) {
-    commands.spawn(Camera3dBundle {
+pub fn spawn_camera(mut commands: Commands) {
+
+    let camera = Camera3dBundle {
         transform: Transform::from_xyz(0.0, 2.5, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..default()
-    });
+    };
+
+    commands.spawn(camera);
 }
 
-const CAMERA_SPEED:f32 = 5.0;
+const CAMERA_SPEED:f32 = 1.0;
 
 pub fn camera_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
@@ -36,17 +39,17 @@ pub fn camera_movement(
         // pan and tilt
 
         if keyboard_input.pressed(KeyCode::ArrowLeft) {
-            transform.rotate(Quat::from_rotation_y(CAMERA_SPEED/10.0* time.delta_seconds()));
+            transform.rotate(Quat::from_rotation_y(CAMERA_SPEED * time.delta_seconds()));
         }
         if keyboard_input.pressed(KeyCode::ArrowRight) {
-            transform.rotate(Quat::from_rotation_y(-CAMERA_SPEED/10.0 * time.delta_seconds()));
+            transform.rotate(Quat::from_rotation_y(-CAMERA_SPEED * time.delta_seconds()));
         }
 
         if keyboard_input.pressed(KeyCode::ArrowUp) {
-            transform.rotate_local(Quat::from_rotation_x(-CAMERA_SPEED/10.0* time.delta_seconds()));
+            transform.rotate_local(Quat::from_rotation_x(-CAMERA_SPEED * time.delta_seconds()));
         }
         if keyboard_input.pressed(KeyCode::ArrowDown) {
-            transform.rotate_local(Quat::from_rotation_x(CAMERA_SPEED/10.0 * time.delta_seconds()));
+            transform.rotate_local(Quat::from_rotation_x(CAMERA_SPEED * time.delta_seconds()));
         }
     }
 }

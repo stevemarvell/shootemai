@@ -1,20 +1,33 @@
-use bevy::prelude::*;
-use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::hierarchy::BuildChildren;
+use bevy::pbr::{PbrBundle, StandardMaterial};
+use bevy::prelude::*;
 
+pub struct PlayerPlugin;
+
+impl Plugin for PlayerPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, spawn_player);
+        app.add_systems(Update, player_movement);
+    }
+}
 #[derive(Component)]
 pub struct Player {
     pub name: String,
 }
 
-pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
-                  mut materials: ResMut<Assets<StandardMaterial>>, ) {
+pub fn spawn_player(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
     let body_colour = Color::BLUE;
     let head_colour = Color::RED;
 
     commands
         .spawn((
-            Player { name: "Thing One".to_string() },
+            Player {
+                name: "Thing One".to_string(),
+            },
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
@@ -23,7 +36,8 @@ pub fn add_player(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>,
                 }),
                 transform: Transform::from_xyz(0.0, 0.5, 0.0),
                 ..default()
-            }))
+            },
+        ))
         .with_children(|parent| {
             parent.spawn(PbrBundle {
                 mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
@@ -67,4 +81,3 @@ pub fn player_movement(
         transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
     }
 }
-

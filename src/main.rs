@@ -1,16 +1,11 @@
 use bevy::prelude::*;
 
-mod cameras;
-mod lighting;
-
-mod terrain;
 mod setup;
 mod player;
 
-mod friend;
-
 use setup::SetupPlugin;
+use player::PlayerPlugin;
 
 fn main() {
-    App::new().add_plugins((DefaultPlugins, SetupPlugin)).run();
+    App::new().add_plugins((DefaultPlugins, SetupPlugin, PlayerPlugin)).run();
 }
