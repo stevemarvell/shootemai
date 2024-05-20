@@ -1,3 +1,4 @@
+use std::ops::{Add, Sub};
 use bevy::hierarchy::BuildChildren;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
@@ -9,7 +10,7 @@ pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, spawn_player);
-        app.add_systems(Update, player_movement);
+        app.add_systems(Update, player_turning_movement);
     }
 }
 #[derive(Component)]
@@ -57,22 +58,45 @@ pub fn spawn_player(
                     ..default()
                 })
                 .with_children(|parent| {
-                    parent
-                        .spawn(PbrBundle {
-                            mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
-                            material: materials.add(StandardMaterial {
-                                base_color: head_colour,
-                                ..default()
-                            }),
-                            transform: Transform::from_xyz(0.0, 0.0, -0.5),
+                    parent.spawn(PbrBundle {
+                        mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
+                        material: materials.add(StandardMaterial {
+                            base_color: head_colour,
                             ..default()
-                        });
+                        }),
+                        transform: Transform::from_xyz(0.0, 0.0, -0.5),
+                        ..default()
+                    });
                 });
         });
 }
 
+pub fn player_turning_movement(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    time: Res<Time>,
+    mut player_query: Query<(&mut Transform, &Velocity), With<Player>>,
+) {
+    if let Ok((mut transform, velocity)) = player_query.get_single_mut() {
+        let mut direction = transform.forward();
 
-pub fn player_movement(
+        if keyboard_input.pressed(KeyCode::KeyW) {
+            transform.translation += direction * velocity.0 * time.delta_seconds();
+        }
+        if keyboard_input.pressed(KeyCode::KeyS) {
+            transform.translation += direction * -velocity.0 * time.delta_seconds();
+        }
+
+        if keyboard_input.pressed(KeyCode::KeyA) {
+            transform.rotate(Quat::from_rotation_y(velocity.0 * time.delta_seconds()));
+        }
+
+        if keyboard_input.pressed(KeyCode::KeyD) {
+            transform.rotate(Quat::from_rotation_y(-velocity.0 * time.delta_seconds()));
+        }
+    }
+}
+
+pub fn player_nsew_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
     mut player_query: Query<(&mut Transform, &Velocity), With<Player>>,
