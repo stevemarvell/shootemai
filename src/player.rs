@@ -1,9 +1,9 @@
-use std::ops::{Add, Sub};
 use bevy::hierarchy::BuildChildren;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
+use std::ops::{Add, Sub};
 
-use crate::setup::cameras::FollowMarker;
+use crate::follow::WatchMarker;
 
 pub struct PlayerPlugin;
 
@@ -35,7 +35,7 @@ pub fn spawn_player(
                 name: "Thing One".to_string(),
             },
             Velocity(5.0),
-            FollowMarker,
+            WatchMarker,
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
@@ -48,7 +48,7 @@ pub fn spawn_player(
         ))
         .with_children(|parent| {
             parent
-                .spawn(PbrBundle {
+                .spawn((PbrBundle {
                     mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                     material: materials.add(StandardMaterial {
                         base_color: head_colour,
@@ -56,7 +56,7 @@ pub fn spawn_player(
                     }),
                     transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
                     ..default()
-                })
+                },))
                 .with_children(|parent| {
                     parent.spawn(PbrBundle {
                         mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
