@@ -46,17 +46,31 @@ pub fn spawn_player(
             },
         ))
         .with_children(|parent| {
-            parent.spawn(PbrBundle {
-                mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
-                material: materials.add(StandardMaterial {
-                    base_color: head_colour,
+            parent
+                .spawn(PbrBundle {
+                    mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
+                    material: materials.add(StandardMaterial {
+                        base_color: head_colour,
+                        ..default()
+                    }),
+                    transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
                     ..default()
-                }),
-                transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
-                ..default()
-            });
+                })
+                .with_children(|parent| {
+                    parent
+                        .spawn(PbrBundle {
+                            mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
+                            material: materials.add(StandardMaterial {
+                                base_color: head_colour,
+                                ..default()
+                            }),
+                            transform: Transform::from_xyz(0.0, 0.0, 0.5),
+                            ..default()
+                        });
+                });
         });
 }
+
 
 pub fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
