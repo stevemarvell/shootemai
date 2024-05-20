@@ -35,20 +35,21 @@ pub fn spawn_player(
                 name: "Thing One".to_string(),
             },
             Velocity(5.0),
-            WatchMarker,
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
                     base_color: body_colour,
                     ..default()
                 }),
-                transform: Transform::from_xyz(0.0, 0.5, 0.0),
+                transform: Transform::from_xyz(0.0, 2.5, 0.0),
                 ..default()
             },
         ))
         .with_children(|parent| {
             parent
-                .spawn((PbrBundle {
+                .spawn((
+                    WatchMarker,
+                    PbrBundle {
                     mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                     material: materials.add(StandardMaterial {
                         base_color: head_colour,
