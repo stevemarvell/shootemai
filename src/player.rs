@@ -15,6 +15,9 @@ pub struct Player {
     pub name: String,
 }
 
+#[derive(Component)]
+pub struct Velocity(f32);
+
 pub fn spawn_player(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -28,6 +31,7 @@ pub fn spawn_player(
             Player {
                 name: "Thing One".to_string(),
             },
+            Velocity(5.0),
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
@@ -51,14 +55,12 @@ pub fn spawn_player(
         });
 }
 
-const PLAYER_SPEED: f32 = 5.0;
-
 pub fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player_query: Query<&mut Transform, With<Player>>,
+    mut player_query: Query<(&mut Transform, &Velocity), With<Player>>,
 ) {
-    if let Ok(mut transform) = player_query.get_single_mut() {
+    if let Ok((mut transform, velocity)) = player_query.get_single_mut() {
         let mut direction = Vec3::ZERO;
 
         if keyboard_input.pressed(KeyCode::KeyW) {
@@ -76,8 +78,7 @@ pub fn player_movement(
 
         if direction != Vec3::ZERO {
             direction = direction.normalize();
+            transform.translation += direction * velocity.0 * time.delta_seconds();
         }
-
-        transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
     }
 }
