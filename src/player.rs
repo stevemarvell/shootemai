@@ -2,6 +2,8 @@ use bevy::hierarchy::BuildChildren;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
 
+use crate::setup::cameras::FollowMarker;
+
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
@@ -32,6 +34,7 @@ pub fn spawn_player(
                 name: "Thing One".to_string(),
             },
             Velocity(5.0),
+            FollowMarker,
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
