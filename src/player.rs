@@ -3,7 +3,7 @@ use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
 use std::ops::{Add, Sub};
 
-use crate::follow::WatchMarker;
+use crate::follow::Marker;
 
 pub struct PlayerPlugin;
 
@@ -48,7 +48,7 @@ pub fn spawn_player(
         .with_children(|parent| {
             parent
                 .spawn((
-                    WatchMarker,
+                    Marker,
                     PbrBundle {
                     mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                     material: materials.add(StandardMaterial {

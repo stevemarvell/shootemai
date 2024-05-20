@@ -11,13 +11,13 @@ impl Plugin for FollowPlugin {
 #[derive(Component)]
 pub struct Watcher;
 #[derive(Component)]
-pub struct WatchMarker;
+pub struct Marker;
 
 pub fn watch_marker(
     mut watcher_query: Query<&mut Transform, With<Watcher>>,
-    follow_marker_query: Query<&GlobalTransform, With<WatchMarker>>,
+    marker: Query<&GlobalTransform, With<Marker>>,
 ) {
-    if let Ok(marker_global_transform) = follow_marker_query.get_single() {
+    if let Ok(marker_global_transform) = marker.get_single() {
         let global_marker_position = marker_global_transform.translation();
 
         for mut watcher_transform in watcher_query.iter_mut() {
