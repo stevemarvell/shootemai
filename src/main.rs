@@ -1,13 +1,15 @@
 use bevy::prelude::*;
 
-mod player;
 mod setup;
+mod friend;
+mod player;
 
-use player::PlayerPlugin;
 use setup::SetupPlugin;
+use player::PlayerPlugin;
+use friend::FriendPlugin;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, SetupPlugin, PlayerPlugin))
+        .add_plugins((DefaultPlugins, SetupPlugin, PlayerPlugin, FriendPlugin))
         .run();
 }

@@ -64,7 +64,7 @@ pub fn spawn_player(
                                 base_color: head_colour,
                                 ..default()
                             }),
-                            transform: Transform::from_xyz(0.0, 0.0, 0.5),
+                            transform: Transform::from_xyz(0.0, 0.0, -0.5),
                             ..default()
                         });
                 });
