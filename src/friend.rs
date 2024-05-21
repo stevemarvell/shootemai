@@ -23,6 +23,7 @@ pub fn spawn_friend(
 ) {
     let body_colour = Color::YELLOW;
     let head_colour = Color::RED;
+    let laser_colour = Color::rgb(0.75, 0.75, 0.75);
 
     commands
         .spawn((
@@ -65,13 +66,14 @@ pub fn spawn_friend(
                         ..default()
                     });
 
+                    // Laser cylinder
                     parent.spawn(PbrBundle {
-                        mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
+                        mesh: meshes.add(Cylinder::new( 0.005, 5.0)),
                         material: materials.add(StandardMaterial {
-                            base_color: head_colour,
+                            base_color: laser_colour,
                             ..default()
                         }),
-                        transform: Transform::from_xyz(0.0, 0.0, -3.0),
+                        transform: Transform::from_xyz(0.0, 0.0, -1.5).with_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)), // Adjust position and rotation
                         ..default()
                     });
                 });
