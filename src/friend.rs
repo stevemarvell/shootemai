@@ -1,4 +1,4 @@
-use crate::follow::Watcher;
+use crate::follow::*;
 use bevy::hierarchy::BuildChildren;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
@@ -44,6 +44,7 @@ pub fn spawn_friend(
             parent
                 .spawn((
                     Watcher,
+                    Viewer,
                     PbrBundle {
                         mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                         material: materials.add(StandardMaterial {
