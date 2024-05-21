@@ -29,7 +29,6 @@ pub fn spawn_friend(
             Friend {
                 name: "Thing Two".to_string(),
             },
-            Watcher,
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
                 material: materials.add(StandardMaterial {
@@ -43,6 +42,7 @@ pub fn spawn_friend(
         .with_children(|parent| {
             parent
                 .spawn((
+                    Watcher,
                     PbrBundle {
                         mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
                         material: materials.add(StandardMaterial {
