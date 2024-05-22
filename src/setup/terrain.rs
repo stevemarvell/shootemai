@@ -1,4 +1,5 @@
 use bevy::asset::Assets;
+use bevy::core::Name;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::{default, Color, Commands, Mesh, Meshable, Plane3d, ResMut};
 
@@ -7,7 +8,7 @@ pub fn setup_terrain(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut meshes: ResMut<Assets<Mesh>>,
 ) {
-    let floor = PbrBundle {
+    let floor = (Name::new("Floor"),PbrBundle {
         mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0)),
         material: materials.add(StandardMaterial {
             base_color: Color::GREEN,
@@ -15,7 +16,7 @@ pub fn setup_terrain(
             ..default()
         }),
         ..default()
-    };
+    });
 
     commands.spawn(floor);
 }
