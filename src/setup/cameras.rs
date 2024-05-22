@@ -2,6 +2,7 @@ use crate::follow::Watcher;
 use bevy::input::ButtonInput;
 use bevy::math::Vec3;
 use bevy::prelude::*;
+use bevy_atmosphere::prelude::AtmosphereCamera;
 
 pub struct CameraPlugin;
 
@@ -13,10 +14,16 @@ impl Plugin for CameraPlugin {
 
 pub fn spawn_camera(mut commands: Commands) {
     let camera = (
+        Name::new("Main Camera"),
         Camera3dBundle {
+            camera: Camera {
+                order: 0, // Assign a priority to avoid ambiguities
+                ..default()
+            },
             transform: Transform::from_xyz(0.0, 2.5, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
+        AtmosphereCamera::default(),
         Watcher,
     );
 

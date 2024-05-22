@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 mod follow;
 mod friend;
@@ -14,6 +15,7 @@ fn main() {
     App::new()
         .add_plugins((
             DefaultPlugins,
+            WorldInspectorPlugin::new(),
             SetupPlugin,
             PlayerPlugin,
             FriendPlugin,
