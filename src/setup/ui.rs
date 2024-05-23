@@ -19,9 +19,10 @@ pub fn ui_start(mut commands: Commands) {
                 style: Style {
                     width: Val::Percent(33.0),
                     height: Val::Percent(33.0),
+                    left: Val::Percent(67.0),
                     ..default()
                 },
-                background_color: Color::GREEN.into(),
+                background_color: Color::DARK_GREEN.into(),
                 ..default()
             },
         ));

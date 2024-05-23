@@ -21,7 +21,7 @@ pub fn setup_terrain(
             ..default()
         },
         RigidBody::Fixed,
-        Collider::cuboid(50.0, 0.1, 50.0),
+        Collider::cuboid(25.0, 0.1, 25.0),
     );
 
     commands.spawn(floor);

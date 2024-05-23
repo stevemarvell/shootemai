@@ -32,12 +32,12 @@ fn resize_viewport(
     for mut camera in camera_query.iter_mut() {
         camera.viewport = Some(Viewport {
             physical_position: UVec2::new(
-                (primary_window.width() * 2.0 / 3.0) as u32,
-                (primary_window.height() * 2.0 / 3.0) as u32,
+                (primary_window.width() * 2.0 / 3.0) as u32 + 15,
+                10,
             ),
             physical_size: UVec2::new(
-                (primary_window.width() / 3.0) as u32,
-                (primary_window.height() / 3.0) as u32,
+                (primary_window.width() / 3.0) as u32 - 20,
+                (primary_window.height() / 3.0) as u32 - 20,
             ),
             ..default()
         });
