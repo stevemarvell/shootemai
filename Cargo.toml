@@ -7,8 +7,9 @@ edition = "2021"
 
 [dependencies]
 bevy = { version = "0.13.0", features = ["dynamic_linking"] }
-bevy-inspector-egui = "0.24.0"
-bevy_atmosphere = "0.9.1"
+bevy-inspector-egui = "*"
+bevy_atmosphere = "*"
+bevy_rapier3d = { version = "*", features = [ "debug-render-3d" ] }
 
 [workspace]
 resolver = "2" # Important! wgpu/Bevy needs this!

@@ -1,10 +1,11 @@
 use bevy::hierarchy::BuildChildren;
 use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
+use bevy_rapier3d::prelude::*;
 
 use crate::follow::Marker;
 
-const PLAYER_SIDE:f32 = 1.0;
+const PLAYER_SIZE: f32 = 1.0;
 
 pub struct PlayerPlugin;
 
@@ -37,7 +38,7 @@ pub fn spawn_player(
             },
             Speed(5.0),
             PbrBundle {
-                mesh: meshes.add(Cuboid::new(PLAYER_SIDE, PLAYER_SIDE, PLAYER_SIDE)),
+                mesh: meshes.add(Cuboid::new(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE)),
                 material: materials.add(StandardMaterial {
                     base_color: body_colour,
                     ..default()
@@ -45,20 +46,23 @@ pub fn spawn_player(
                 transform: Transform::from_xyz(0.0, 2.5, 0.0),
                 ..default()
             },
+            RigidBody::Dynamic,
+            Collider::cuboid(PLAYER_SIZE / 2.0, PLAYER_SIZE / 2.0, PLAYER_SIZE / 2.0),
         ))
         .with_children(|parent| {
             parent
                 .spawn((
                     Marker,
                     PbrBundle {
-                    mesh: meshes.add(Sphere::new(PLAYER_SIDE/2.0).mesh().uv(32, 18)),
-                    material: materials.add(StandardMaterial {
-                        base_color: head_colour,
+                        mesh: meshes.add(Sphere::new(PLAYER_SIZE / 2.0).mesh().uv(32, 18)),
+                        material: materials.add(StandardMaterial {
+                            base_color: head_colour,
+                            ..default()
+                        }),
+                        transform: Transform::from_xyz(0.0, PLAYER_SIZE, 0.0), // Position the sphere on top of the cube
                         ..default()
-                    }),
-                    transform: Transform::from_xyz(0.0, PLAYER_SIDE, 0.0), // Position the sphere on top of the cube
-                    ..default()
-                },))
+                    },
+                ))
                 .with_children(|parent| {
                     parent.spawn(PbrBundle {
                         mesh: meshes.add(Sphere::new(0.2).mesh().uv(32, 18)),
@@ -66,7 +70,7 @@ pub fn spawn_player(
                             base_color: head_colour,
                             ..default()
                         }),
-                        transform: Transform::from_xyz(0.0, 0.0, -PLAYER_SIDE/2.0),
+                        transform: Transform::from_xyz(0.0, 0.0, -PLAYER_SIZE / 2.0),
                         ..default()
                     });
                 });
@@ -106,7 +110,5 @@ pub fn player_turning_movement(
         if keyboard_input.pressed(KeyCode::KeyE) {
             transform.translation -= up * speed.0 * time.delta_seconds();
         }
-
-        transform.translation.y = transform.translation.y.max(PLAYER_SIDE/2.0);
     }
 }

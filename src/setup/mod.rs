@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy_atmosphere::prelude::AtmospherePlugin;
+use bevy_rapier3d::prelude::{NoUserData, RapierPhysicsPlugin};
 
 mod cameras;
 mod lighting;
@@ -17,6 +18,7 @@ pub struct SetupPlugin;
 impl Plugin for SetupPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((CameraPlugin, UiPlugin, AtmospherePlugin));
+        app.add_plugins(RapierPhysicsPlugin::<NoUserData>::default());
         app.add_systems(Startup, (spawn_lighting, setup_terrain));
     }
 }
