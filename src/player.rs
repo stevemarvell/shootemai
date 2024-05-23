@@ -4,6 +4,8 @@ use bevy::prelude::*;
 
 use crate::follow::Marker;
 
+const PLAYER_SIDE:f32 = 1.0;
+
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
@@ -18,7 +20,7 @@ pub struct Player {
 }
 
 #[derive(Component)]
-pub struct Velocity(f32);
+pub struct Speed(f32);
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -33,9 +35,9 @@ pub fn spawn_player(
             Player {
                 name: "Thing One".to_string(),
             },
-            Velocity(5.0),
+            Speed(5.0),
             PbrBundle {
-                mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
+                mesh: meshes.add(Cuboid::new(PLAYER_SIDE, PLAYER_SIDE, PLAYER_SIDE)),
                 material: materials.add(StandardMaterial {
                     base_color: body_colour,
                     ..default()
@@ -49,12 +51,12 @@ pub fn spawn_player(
                 .spawn((
                     Marker,
                     PbrBundle {
-                    mesh: meshes.add(Sphere::new(0.5).mesh().uv(32, 18)),
+                    mesh: meshes.add(Sphere::new(PLAYER_SIDE/2.0).mesh().uv(32, 18)),
                     material: materials.add(StandardMaterial {
                         base_color: head_colour,
                         ..default()
                     }),
-                    transform: Transform::from_xyz(0.0, 1.0, 0.0), // Position the sphere on top of the cube
+                    transform: Transform::from_xyz(0.0, PLAYER_SIDE, 0.0), // Position the sphere on top of the cube
                     ..default()
                 },))
                 .with_children(|parent| {
@@ -64,7 +66,7 @@ pub fn spawn_player(
                             base_color: head_colour,
                             ..default()
                         }),
-                        transform: Transform::from_xyz(0.0, 0.0, -0.5),
+                        transform: Transform::from_xyz(0.0, 0.0, -PLAYER_SIDE/2.0),
                         ..default()
                     });
                 });
@@ -74,52 +76,37 @@ pub fn spawn_player(
 pub fn player_turning_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player_query: Query<(&mut Transform, &Velocity), With<Player>>,
+    mut player_query: Query<(&mut Transform, &Speed), With<Player>>,
 ) {
-    if let Ok((mut transform, velocity)) = player_query.get_single_mut() {
-        let mut direction = transform.forward();
+    if let Ok((mut transform, speed)) = player_query.get_single_mut() {
+        let forward = transform.forward();
 
         if keyboard_input.pressed(KeyCode::KeyW) {
-            transform.translation += direction * velocity.0 * time.delta_seconds();
+            transform.translation += forward * speed.0 * time.delta_seconds();
         }
+
         if keyboard_input.pressed(KeyCode::KeyS) {
-            transform.translation += direction * -velocity.0 * time.delta_seconds();
+            transform.translation += forward * -speed.0 * time.delta_seconds();
         }
 
         if keyboard_input.pressed(KeyCode::KeyA) {
-            transform.rotate(Quat::from_rotation_y(velocity.0 * time.delta_seconds()));
+            transform.rotate(Quat::from_rotation_y(speed.0 * time.delta_seconds()));
         }
 
         if keyboard_input.pressed(KeyCode::KeyD) {
-            transform.rotate(Quat::from_rotation_y(-velocity.0 * time.delta_seconds()));
-        }
-    }
-}
-
-pub fn player_nsew_movement(
-    keyboard_input: Res<ButtonInput<KeyCode>>,
-    time: Res<Time>,
-    mut player_query: Query<(&mut Transform, &Velocity), With<Player>>,
-) {
-    if let Ok((mut transform, velocity)) = player_query.get_single_mut() {
-        let mut direction = Vec3::ZERO;
-
-        if keyboard_input.pressed(KeyCode::KeyW) {
-            direction.z -= 1.0;
-        }
-        if keyboard_input.pressed(KeyCode::KeyS) {
-            direction.z += 1.0;
-        }
-        if keyboard_input.pressed(KeyCode::KeyA) {
-            direction.x -= 1.0;
-        }
-        if keyboard_input.pressed(KeyCode::KeyD) {
-            direction.x += 1.0;
+            transform.rotate(Quat::from_rotation_y(-speed.0 * time.delta_seconds()));
         }
 
-        if direction != Vec3::ZERO {
-            direction = direction.normalize();
-            transform.translation += direction * velocity.0 * time.delta_seconds();
+        let up = transform.up();
+
+        if keyboard_input.pressed(KeyCode::KeyQ) {
+            transform.translation += up * speed.0 * time.delta_seconds();
         }
+
+        if keyboard_input.pressed(KeyCode::KeyE) {
+            transform.translation -= up * speed.0 * time.delta_seconds();
+        }
+
+        transform.translation.y = transform.translation.y.max(PLAYER_SIDE/2.0);
     }
 }

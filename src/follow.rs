@@ -29,7 +29,7 @@ fn resize_viewport(
 ) {
     let primary_window = window_query.get_single().unwrap();
 
-    for (mut camera) in camera_query.iter_mut() {
+    for mut camera in camera_query.iter_mut() {
         camera.viewport = Some(Viewport {
             physical_position: UVec2::new(
                 (primary_window.width() * 2.0 / 3.0) as u32,
