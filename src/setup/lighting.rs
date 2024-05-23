@@ -8,13 +8,10 @@ pub struct LightingPlugin;
 
 impl Plugin for LightingPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(AmbientLight {
-            color: Color::WHITE,
-            brightness: 0.02,
-        })
-        .add_plugins(AtmospherePlugin)
-        .add_systems(Startup, spawn_sun)
-        .add_systems(Update, animate_sun);
+        app
+            .add_plugins(AtmospherePlugin)
+            .add_systems(Startup, spawn_sun)
+            .add_systems(Update, animate_sun);
     }
 }
 
