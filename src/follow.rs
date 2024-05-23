@@ -47,54 +47,51 @@ fn resize_viewport(
 fn toggle_viewer_camera(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
-    viewer_query: Query<(Entity, &Children), With<Viewer>>,
+    viewer_query: Query<Entity, With<Viewer>>,
     camera_query: Query<Entity, With<ViewerCamera>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
 ) {
+    let viewer_entity = match viewer_query.get_single() {
+        Ok(entity) => entity,
+        Err(_) => return,
+    };
+
     if keyboard_input.just_pressed(KeyCode::Slash) {
-        if let Ok((entity, children)) = viewer_query.get_single() {
-            let mut has_camera = false;
 
-            for &child in children.iter() {
-                if camera_query.get(child).is_ok() {
-                    has_camera = true;
-                    // Despawn the existing camera
-                    commands.entity(child).despawn_recursive();
-                }
-            }
-
-            // If there was no camera, spawn a new one
-            if !has_camera {
-                commands.entity(entity).with_children(|parent| {
-                    let primary_window = window_query.get_single().unwrap();
-
-                    parent
-                        .spawn((
-                            Name::new("Viewer Camera"),
-                            ViewerCamera,
-                            Camera3dBundle {
-                                camera: Camera {
-                                    viewport: Some(Viewport {
-                                        physical_position: UVec2::new(
-                                            (primary_window.width() * 2.0 / 3.0) as u32,
-                                            (primary_window.height() * 2.0 / 3.0) as u32,
-                                        ),
-                                        physical_size: UVec2::new(
-                                            (primary_window.width() / 3.0) as u32,
-                                            (primary_window.height() / 3.0) as u32,
-                                        ),
-                                        ..default()
-                                    }),
-                                    order: 1, // Assign a priority to avoid ambiguities
-                                    ..default()
-                                },
-                                transform: Transform::from_xyz(0.0, 0.0, -1.5),
-                                ..default()
-                            },
-                        ));
-                });
-            }
+        // Check if a ViewerCamera exists and despawn it if found
+        if let Ok(camera_entity) = camera_query.get_single() {
+            commands.entity(camera_entity).despawn_recursive();
+            return;
         }
+
+        // If no ViewerCamera exists, spawn a new one
+        commands.entity(viewer_entity).with_children(|parent| {
+            let primary_window = window_query.get_single().unwrap();
+
+            parent.spawn((
+                Name::new("Viewer Camera"),
+                ViewerCamera,
+                Camera3dBundle {
+                    camera: Camera {
+                        viewport: Some(Viewport {
+                            physical_position: UVec2::new(
+                                (primary_window.width() * 2.0 / 3.0) as u32,
+                                (primary_window.height() * 2.0 / 3.0) as u32,
+                            ),
+                            physical_size: UVec2::new(
+                                (primary_window.width() / 3.0) as u32,
+                                (primary_window.height() / 3.0) as u32,
+                            ),
+                            ..default()
+                        }),
+                        order: 1, // Assign a priority to avoid ambiguities
+                        ..default()
+                    },
+                    transform: Transform::from_xyz(0.0, 0.0, -1.5),
+                    ..default()
+                },
+            ));
+        });
     }
 }
 
