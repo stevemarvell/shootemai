@@ -23,6 +23,7 @@ pub fn spawn_camera(mut commands: Commands) {
             transform: Transform::from_xyz(0.0, 2.5, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
+        IsDefaultUiCamera,
         AtmosphereCamera::default(),
         Watcher,
     );
