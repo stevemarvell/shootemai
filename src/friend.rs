@@ -21,7 +21,7 @@ pub fn spawn_friend(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let body_colour = Color::YELLOW;
+    let body_colour = Color::GRAY;
     let head_colour = Color::RED;
 
     commands
