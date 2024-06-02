@@ -1,6 +1,7 @@
 use std::process::Command;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::{NoUserData, RapierPhysicsPlugin};
+use chrono::{NaiveDate};
 
 mod cameras;
 mod lighting;
@@ -16,11 +17,14 @@ use ui::UiPlugin;
 struct WorldOrigin {
     latitude: f32,
     longitude: f32,
+    date: NaiveDate,
 }
 fn setup_world(mut commands: Commands) {
     commands.spawn(WorldOrigin {
         latitude: 54.0, // Example latitude
         longitude: 0.0, // Example longitude
+        // @TODO advance data with each midnight
+        date: NaiveDate::from_ymd_opt(2024, 5, 24).unwrap(),
     });
 }
 pub struct SetupPlugin;
