@@ -20,9 +20,10 @@ pub fn spawn_sun(mut commands: Commands) {
                 shadows_enabled: true,
                 ..Default::default()
             },
+            // Adjust the rotation to simulate a 10 AM sun position
             transform: Transform::from_rotation(Quat::from_axis_angle(
-                Vec3::Y,
-                std::f32::consts::FRAC_PI_2 / 3.0,
+                Vec3::X,
+                -std::f32::consts::FRAC_PI_4, // 45 degrees above the horizon
             )),
             ..Default::default()
         },

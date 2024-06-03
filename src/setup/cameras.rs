@@ -18,29 +18,27 @@ struct FollowCamera;
 pub struct FollowTarget;
 
 fn follow_camera_system(
-    mut follow_camera_query: Query<(&mut Transform, &GlobalTransform), With<FollowCamera>>,
-    marker_query: Query<&GlobalTransform, With<FollowTarget>>,
+    mut follow_camera_query: Query<&mut Transform, With<FollowCamera>>,
+    target_query: Query<&GlobalTransform, With<FollowTarget>>,
 ) {
-    if let Ok(marker_global_transform) = marker_query.get_single() {
-        let global_marker_position = marker_global_transform.translation();
+    if let Ok(target_global_transform) = target_query.get_single() {
+        let global_target_position = target_global_transform.translation();
 
-        for (mut watcher_transform, watcher_global_transform) in follow_camera_query.iter_mut() {
-            let global_watcher_position = watcher_global_transform.translation();
-            let direction_to_marker =
-                (global_marker_position - global_watcher_position).normalize();
+        for mut follower_transform in follow_camera_query.iter_mut() {
 
-            // Calculate the right and up vectors to form an orthogonal basis
-            let right = direction_to_marker.cross(Vec3::Y).normalize();
-            let up = right.cross(direction_to_marker).normalize();
+            // Define the offset for the camera to follow from behind
+            let follow_distance = 10.0;
+            let follow_height = 5.0;
 
-            // Create a rotation matrix from these vectors
-            let rotation_matrix = Mat3::from_cols(right, up, -direction_to_marker);
+            // Adjust the offset to ensure the camera follows from behind the target
+            let offset = -target_global_transform.forward() * follow_distance + Vec3::Y * follow_height;
+            let new_camera_position = global_target_position + offset;
 
-            // Convert the rotation matrix to a quaternion
-            let rotation_quat = Quat::from_mat3(&rotation_matrix);
+            // Update the camera's position
+            follower_transform.translation = new_camera_position;
 
-            // Set the watcher's rotation
-            watcher_transform.rotation = rotation_quat;
+            // Make the camera look at the target
+            follower_transform.look_at(global_target_position, Vec3::Y);
         }
     }
 }

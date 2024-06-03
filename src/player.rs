@@ -44,7 +44,7 @@ pub fn spawn_player(
                     base_color: body_colour,
                     ..default()
                 }),
-                transform: Transform::from_xyz(0.0, 2.5, 0.0),
+                transform: Transform::from_xyz(0.0, 0.5, 0.0),
                 ..default()
             },
             RigidBody::Dynamic,
