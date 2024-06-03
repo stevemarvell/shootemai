@@ -3,7 +3,7 @@ use bevy::pbr::{PbrBundle, StandardMaterial};
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::follow::Marker;
+use crate::setup::cameras::FollowTarget;
 
 const PLAYER_SIZE: f32 = 1.0;
 
@@ -33,6 +33,7 @@ pub fn spawn_player(
 
     commands
         .spawn((
+            Name::new("Player"),
             Player {
                 name: "Thing One".to_string(),
             },
@@ -52,7 +53,7 @@ pub fn spawn_player(
         .with_children(|parent| {
             parent
                 .spawn((
-                    Marker,
+                    FollowTarget,
                     PbrBundle {
                         mesh: meshes.add(Sphere::new(PLAYER_SIZE / 2.0).mesh().uv(32, 18)),
                         material: materials.add(StandardMaterial {
