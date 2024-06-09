@@ -37,7 +37,7 @@ pub fn spawn_player(
             Player {
                 name: "Thing One".to_string(),
             },
-            Speed(5.0),
+            Speed(2.0),
             PbrBundle {
                 mesh: meshes.add(Cuboid::new(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE)),
                 material: materials.add(StandardMaterial {

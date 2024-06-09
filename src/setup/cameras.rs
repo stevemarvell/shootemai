@@ -28,8 +28,8 @@ impl Default for CameraState {
     fn default() -> Self {
         CameraState {
             distance: 10.0,
-            vertical_angle: 5.0,
-            horizontal_angle: 0.0,
+            vertical_angle: std::f32::consts::FRAC_PI_8,
+            horizontal_angle: 3.0 * std::f32::consts::FRAC_PI_4,
         }
     }
 }
@@ -56,9 +56,13 @@ fn follow_camera_system(
         for mut follow_camera_transform in follow_camera_query.iter_mut() {
             // Calculate the offset based on the current angles and distance from the state
             let offset = Vec3::new(
-                camera_state.distance * camera_state.horizontal_angle.cos() * camera_state.vertical_angle.cos(),
+                camera_state.distance
+                    * camera_state.horizontal_angle.cos()
+                    * camera_state.vertical_angle.cos(),
                 camera_state.distance * camera_state.vertical_angle.sin(),
-                camera_state.distance * camera_state.horizontal_angle.sin() * camera_state.vertical_angle.cos(),
+                camera_state.distance
+                    * camera_state.horizontal_angle.sin()
+                    * camera_state.vertical_angle.cos(),
             );
 
             // Apply the target's rotation to the offset
@@ -75,9 +79,6 @@ fn follow_camera_system(
     }
 }
 
-
-
-
 fn orbit_camera_system(
     mut camera_state: ResMut<CameraState>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
@@ -91,10 +92,10 @@ fn orbit_camera_system(
     );
 
     if keyboard_input.pressed(KeyCode::ArrowLeft) {
-        camera_state.horizontal_angle -= 1.0 * delta_time;
+        camera_state.horizontal_angle += 1.0 * delta_time;
     }
     if keyboard_input.pressed(KeyCode::ArrowRight) {
-        camera_state.horizontal_angle += 1.0 * delta_time;
+        camera_state.horizontal_angle -= 1.0 * delta_time;
     }
     if keyboard_input.pressed(KeyCode::ArrowUp) {
         camera_state.vertical_angle += 1.0 * delta_time;

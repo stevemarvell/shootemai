@@ -16,7 +16,7 @@ pub fn spawn_sun(mut commands: Commands) {
         Sun,
         DirectionalLightBundle {
             directional_light: DirectionalLight {
-                illuminance: light_consts::lux::AMBIENT_DAYLIGHT,
+                illuminance: light_consts::lux::OVERCAST_DAY,
                 shadows_enabled: true,
                 ..Default::default()
             },
